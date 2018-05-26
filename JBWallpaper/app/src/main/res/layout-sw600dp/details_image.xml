@@ -1,0 +1,39 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/details_image_frame"
+    android:elevation="12dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/details_image_height"
+            android:id="@+id/details_image"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:background="@drawable/scrim"
+            android:layout_height="@dimen/details_image_height"
+            android:layout_width="match_parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/details_date"
+            android:layout_gravity="bottom"
+            style="@style/DetailsDate"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_gravity="bottom|end"
+            app:backgroundTint="@color/transparent"
+            app:srcCompat="@drawable/ic_fullscreen" />
+
+</FrameLayout>
+
+
+

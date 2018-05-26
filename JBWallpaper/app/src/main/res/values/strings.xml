@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">APOD</string>
+    <string name="details_activity_name">Picture Details</string>
+
+    <!-- Actions -->
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+    <string name="action_set">Set As Wallpaper</string>
+    
+    <!-- Preferences -->
+    <string name="pref_notifications_key">pref_notification</string>
+    <string name="pref_set_wallpaper_key">pref_set_wallpaper</string>
+
+    <string name="pref_set_wallpaper">Automatically set wallpaper</string>
+    <string name="pref_set_wallpaper_summ">Set the latest picture as the wallpaper</string>
+
+    <string name="pref_notifications">Notifications</string>
+    <string name="pref_notifications_summ">Send notifications about daily picture updates</string>
+
+    <!-- Labels -->
+    <string name="credits_string">Credits:</string>
+    <string name="copyright_string">Copyright:</string>
+
+    <!-- App Widget -->
+    <string name="app_widget_name">APOD Widget</string>
+    <string name="app_widget_no_image">No new image today.</string>
+    <string name="app_widget_error">Network error, please refresh the widget.</string>
+
+
+    <!-- Dialogs -->
+    <string name="no_connection_alert_title">No Network Connection!</string>
+    <string name="no_connection_alert_message_one">Data not loaded due to network connection issues.</string>
+    <string name="no_connection_alert_message_two">Image not loaded due to network connection issues.</string>
+    <string name="no_connection_alert_message_three">Network error, please try again later.</string>
+
+    <!-- Toasts and Snackbars -->
+    <string name="setting_wallpaper">Setting wallpaper.</string>
+    <string name="wallpaper_set">Wallpaper set.</string>
+    <string name="wallpaper_error">Server error. Wallpaper not set.</string>
+
+    <string name="server_error_alert_title">Server Error!</string>
+    <string name="unable_to_parse_alert_message">Unable to parse data from the server.</string>
+
+    <!-- Notifications -->
+    <string name="channel_id">new_image</string>
+    <string name="channel_name">New Image Channel</string>
+    <string name="channel_description">Daily notification about new APOD image.</string>
+
+    <string name="notification_title">APOD</string>
+    <string name="notification_no_image">No new image today.</string>
+    <string name="notification_no_connection">No new image today. Network unavailable</string>
+    <string name="notificaton_server_error">No new image today. Server error.</string>
+
+    <!-- AdMob -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="your_physical_device_id">99999999999999999999999999999999</string>
+</resources>

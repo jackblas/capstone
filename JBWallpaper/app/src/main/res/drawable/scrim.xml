@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- For better contrast, make scrim darker than typical 4d -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="-90"
+        android:startColor="#00000000"
+        android:centerColor="#00000000"
+        android:endColor="#66000000"
+        android:type="linear"/>
+</shape>

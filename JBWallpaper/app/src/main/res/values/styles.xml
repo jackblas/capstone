@@ -1,0 +1,93 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+
+        <item name="android:textColorPrimary">@color/primaryText</item>
+        <item name="android:textColorSecondary">@color/secondaryText</item>
+        <item name="android:textColorPrimaryInverse">@color/primaryTextInverse</item>
+
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+
+        <item name="alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
+        <item name="preferenceTheme">@style/PrefTheme</item>
+
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Settings fragment -->
+    <style name="PrefTheme" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
+
+    <!-- Main Activity styles -->
+
+    <style name="ListItemTitle" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/text_margin_list</item>
+    </style>
+
+    <!-- Details Activity styles -->
+    <!-- Details date text-->
+    <style name="DetailsDate" parent="@android:style/TextAppearance.Theme">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:layout_margin">@dimen/text_margin</item>
+    </style>
+
+    <!-- Title text-->
+    <style name="DetailsTitle" parent="@android:style/TextAppearance.Large">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/text_margin</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+    <!-- Body/Explanation text -->
+    <style name="DetailsBody" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:layout_margin">@dimen/text_margin</item>
+
+    </style>
+    <!-- Caption/byline text for date and credits -->
+    <style name="DetailByline" parent="@android:style/TextAppearance.Small.Inverse">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="DetailBylineLabel" parent="@android:style/TextAppearance.Small.Inverse">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <!-- App Widget -->
+    <style name="AppWidgetDate" parent="@android:style/TextAppearance.Small.Inverse">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="AppWidgetTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+</resources>

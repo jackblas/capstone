@@ -4,13 +4,14 @@
     tools:context=".DetailsActivity">
 
     <group android:id="@+id/menu_details_group">
-        <item android:id="@+id/action_set"
+        <item
+            android:id="@+id/action_set"
             android:title="@string/action_set"
-            app:showAsAction="never"/>
+            app:showAsAction="never" />
         <item
             android:id="@+id/action_share"
             android:title="@string/action_share"
-            app:showAsAction="ifRoom"
-            app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+            app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+            app:showAsAction="ifRoom" />
     </group>
 </menu>

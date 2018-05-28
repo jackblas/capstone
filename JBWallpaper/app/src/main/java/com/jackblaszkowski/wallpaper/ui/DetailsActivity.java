@@ -11,11 +11,10 @@ import android.view.Menu;
 import com.jackblaszkowski.wallpaper.R;
 
 
-
 public class DetailsActivity extends AppCompatActivity implements ThumbnailsFragment.OnFragmentInteractionListener {
     private static final String LOG_TAG = "DetailsActivity";
 
-    private boolean mServerErrorShown=false;
+    private boolean mServerErrorShown = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class DetailsActivity extends AppCompatActivity implements ThumbnailsFrag
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        if(mServerErrorShown) {
+        if (mServerErrorShown) {
             menu.findItem(R.id.action_share).setEnabled(false);
             menu.findItem(R.id.action_set).setEnabled(false);
         }
@@ -63,7 +62,7 @@ public class DetailsActivity extends AppCompatActivity implements ThumbnailsFrag
      * OnFragmentInteractionListener interface method implementation
      */
     @Override
-    public void onFragmentInteraction(String date,int position) {
+    public void onFragmentInteraction(String date, int position) {
         throw new UnsupportedOperationException("This functionality has not been implemented yet.");
     }
 
@@ -73,14 +72,14 @@ public class DetailsActivity extends AppCompatActivity implements ThumbnailsFrag
     @Override
     public void showServerErrorAlert() {
 
-        if(!mServerErrorShown) {
+        if (!mServerErrorShown) {
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this, 0);
             alertBuilder.setTitle(R.string.server_error_alert_title);
             alertBuilder.setMessage(R.string.unable_to_parse_alert_message);
             alertBuilder.setPositiveButton(android.R.string.ok, null);
             alertBuilder.create().show();
 
-            mServerErrorShown=true;
+            mServerErrorShown = true;
         }
 
     }

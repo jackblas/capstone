@@ -28,7 +28,7 @@ public class APODApi {
 
     private static final String LOG_TAG = "APODApi";
 
-    private static String BASE_URL = "https://api.nasa.gov/planetary/";
+    private static final String BASE_URL = "https://api.nasa.gov/planetary/";
 
     private static final int ITEM_PROJECTION_LENGHT = 8;
     private static final int DIR_PROJECTION_LENGHT = 5;
@@ -53,24 +53,25 @@ public class APODApi {
     private static final String IMAGE_MEDIA = "image";
     private boolean getLast = false;
 
-    public APODApi() { }
+    public APODApi() {
+    }
 
-    public Cursor query(String path, String[] projection, String selection, String[] selectionArgs,String sortOrder){
+    public Cursor query(String path, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Log.v(LOG_TAG, "In the query()");
 
         // Build Uri - path=apod
         Uri builtUri;
-        getLast=false;
+        getLast = false;
 
         Log.v(LOG_TAG, "In the query() getLast=" + getLast);
 
-        if(selectionArgs != null) {
+        if (selectionArgs != null) {
 
-            if(selection != null && selection.equals(APODContract.PATH_START_DATE)){
+            if (selection != null && selection.equals(APODContract.PATH_START_DATE)) {
 
                 // Get images for a date range. Path: apod/start_date/*
                 // Today is implied end_date
-                String startDate=selectionArgs[1];
+                String startDate = selectionArgs[1];
 
                 builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(path)
                         .appendQueryParameter(API_KEY_URL_PARAM, BuildConfig.APOD_API_KEY)
@@ -81,10 +82,10 @@ public class APODApi {
             } else {
 
                 // Get images for a date range. Path: apod/*/*
-                if(selectionArgs.length>1){
+                if (selectionArgs.length > 1) {
 
-                    String startDate=selectionArgs[0];
-                    String endDate=selectionArgs[1];
+                    String startDate = selectionArgs[0];
+                    String endDate = selectionArgs[1];
 
                     builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(path)
                             .appendQueryParameter(API_KEY_URL_PARAM, BuildConfig.APOD_API_KEY)
@@ -93,10 +94,9 @@ public class APODApi {
                             .build();
 
 
-
                 } else {
                     // Get image by date. Path: apod/*
-                    String date=selectionArgs[0];
+                    String date = selectionArgs[0];
 
                     builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(path)
                             .appendQueryParameter(API_KEY_URL_PARAM, BuildConfig.APOD_API_KEY)
@@ -110,7 +110,7 @@ public class APODApi {
 
         } else {
             // No args? Get last image. Path: apod/
-            getLast=true;
+            getLast = true;
             builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(path)
                     .appendQueryParameter(API_KEY_URL_PARAM, BuildConfig.APOD_API_KEY)
                     .build();
@@ -132,10 +132,10 @@ public class APODApi {
             cursor = jsonToCursor(jsonString, projection);
 
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Error - Invalid URL: ",e);
+            Log.e(LOG_TAG, "Error - Invalid URL: ", e);
 
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Connection problems or timeout: ",e);
+            Log.e(LOG_TAG, "Connection problems or timeout: ", e);
 
         }
 
@@ -162,7 +162,7 @@ public class APODApi {
                 .url(url)
                 .build();
 
-        Response response= client.newCall(request).execute();
+        Response response = client.newCall(request).execute();
 
         long elapsedTime = response.sentRequestAtMillis() - response.receivedResponseAtMillis();
 
@@ -173,9 +173,9 @@ public class APODApi {
 
     }
 
-    private Cursor jsonToCursor(String jsonStr, String[] projection){
+    private Cursor jsonToCursor(String jsonStr, String[] projection) {
 
-        long rowIndex =0L;
+        long rowIndex = 0L;
         JSONArray resultsArray;
 
         MatrixCursor matrixCursor = new MatrixCursor(projection);
@@ -209,7 +209,7 @@ public class APODApi {
                 // Add only images to the list.
                 // If getting latest item only, get it regardless of the type,
                 // it will be dealt with later.
-                if(!getLast) {
+                if (!getLast) {
                     if (!((apod.getString(JSON_MEDIA_TYPE)).equals(IMAGE_MEDIA))) {
                         continue;
                     }
@@ -236,7 +236,7 @@ public class APODApi {
                     columnValues[DetailsFragment.COL_EXPLANATION] = apod.getString(JSON_EXPLANATION);
 
                     // Some media types don't have hdurl
-                    if (apod.isNull(JSON_HDURL)){
+                    if (apod.isNull(JSON_HDURL)) {
                         columnValues[DetailsFragment.COL_HDURL] = null;
                     } else {
                         columnValues[DetailsFragment.COL_HDURL] = apod.getString(JSON_HDURL);
@@ -250,10 +250,10 @@ public class APODApi {
 
                 matrixCursor.addRow(columnValues);
             }
-        } catch(JSONException e){
-            Log.d(LOG_TAG, "Error creating MatrixCursor.",e);
+        } catch (JSONException e) {
+            Log.d(LOG_TAG, "Error creating MatrixCursor.", e);
         }
 
-        return  matrixCursor;
+        return matrixCursor;
     }
 }

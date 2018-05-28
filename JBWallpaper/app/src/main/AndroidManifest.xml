@@ -5,20 +5,21 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity"
+        <activity
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +27,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.DetailsActivity"
+        <activity
+            android:name=".ui.DetailsActivity"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -35,7 +37,8 @@
         </activity>
 
 
-        <provider android:name=".data.APODProvider"
+        <provider
+            android:name=".data.APODProvider"
             android:authorities="com.jackblaszkowski.wallpaper"
             android:exported="false" />
 
@@ -43,10 +46,11 @@
 
         <service
             android:name=".services.APODJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="false" />
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <receiver android:name=".services.BootReceiver"
+        <receiver
+            android:name=".services.BootReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
@@ -56,16 +60,17 @@
         <!-- App Widget -->
         <receiver
             android:name=".appwidget.APDOWidget"
-            android:label="@string/app_widget_name" >
+            android:label="@string/app_widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.jackblaszkowski.wallpaper.APPWIDGET_REFRESH"/>
+                <action android:name="com.jackblaszkowski.wallpaper.APPWIDGET_REFRESH" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_apod" />
         </receiver>
 
-        <service android:name=".appwidget.APODWidgetService"/>
+        <service android:name=".appwidget.APODWidgetService" />
 
 
     </application>

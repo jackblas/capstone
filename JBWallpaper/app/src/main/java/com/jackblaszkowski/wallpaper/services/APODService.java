@@ -41,17 +41,14 @@ import java.util.concurrent.TimeUnit;
 
 
 public class APODService extends IntentService {
-    private static final String TAG = "APODService";
-
-    private static final int TABLET_WIDTH = 600;
-    private static final String IMAGE_MEDIA = "image";
-
-    private static final long DAILY = TimeUnit.DAYS.toMillis(1L);
-    private static final long PERIOD = 12*60*60000L;
     //For testing: 15min
     //private static final long PERIOD = 15*60000L;
     public static final int JOB_ID = 1;
-
+    private static final String TAG = "APODService";
+    private static final int TABLET_WIDTH = 600;
+    private static final String IMAGE_MEDIA = "image";
+    private static final long DAILY = TimeUnit.DAYS.toMillis(1L);
+    private static final long PERIOD = 12 * 60 * 60000L;
     private boolean mNewImage = false;
     private Bitmap mAPODImage;
     private String mAPODUrl;
@@ -63,87 +60,7 @@ public class APODService extends IntentService {
         super(TAG);
     }
 
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        Log.v(TAG, "In the onHandleIntent().");
-
-        // New API 26 requirement:
-        // The app must call service's startForeground()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(100, new Notification());
-        }
-
-        ContentResolver contentResolver = getApplicationContext().getContentResolver();
-        Uri imagesUri = APODContract.PictureEntry.buildLastItemUri();
-
-        Cursor cursor = contentResolver.query(
-                imagesUri,
-                DetailsFragment.IMAGE_ITEM_COLUMNS,
-                null,
-                null,
-                null);
-
-        // Get preferences:
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean sendNotifications = preferences.getBoolean(getResources().getString(R.string.pref_notifications_key),false);
-        Boolean setWallpaper = preferences.getBoolean(getResources().getString(R.string.pref_set_wallpaper_key),false);
-
-         if (cursor == null){
-            Log.w(TAG, "Cursor is null. Wallpaper will not be set.");
-
-             mNotificationText = getString(R.string.notification_no_connection);
-            setWallpaper=false;
-
-         } else if (cursor != null && !cursor.moveToFirst()) {
-            Log.e(TAG, "Error reading item detail cursor.  Wallpaper will not be set.");
-
-             mNotificationText = getString(R.string.notificaton_server_error);
-            setWallpaper=false;
-
-            cursor.close();
-
-         } else {
-
-             //Get data from cursor
-             if((cursor.getString(DetailsFragment.COL_MEDIA_TYPE)).equals(IMAGE_MEDIA)){
-                 mNewImage=true;
-                 // Get data from cursor:
-                 mNotificationText = cursor.getString(DetailsFragment.COL_TITLE);
-                 mAPODDate = cursor.getString(DetailsFragment.COL_DATE);
-                 mAPODHDUrl = cursor.getString(DetailsFragment.COL_HDURL);
-                 mAPODUrl = cursor.getString(DetailsFragment.COL_URL);
-
-                 try {
-
-                    mAPODImage = Picasso.with(getApplicationContext())
-                            .load(cursor.getString(DetailsFragment.COL_URL))
-                            .resize(50,50).centerCrop().get();
-
-                } catch(IOException e) {
-                    Log.e(TAG, "Error loading image.",e);
-                }
-
-            } else {
-                 mNotificationText = getString(R.string.notification_no_image);
-            }
-
-         }
-
-        if (sendNotifications) {
-            sendNotification(getApplicationContext());
-        }
-
-        if(mNewImage && setWallpaper) {
-            setWallpaper(getApplicationContext());
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            stopForeground(true);
-        }
-
-    }
-
-    public static void scheduleDailyTask(Context context){
+    public static void scheduleDailyTask(Context context) {
         Log.v(TAG, "In the scheduleDailyTask().");
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -179,8 +96,8 @@ public class APODService extends IntentService {
                     PackageManager.DONT_KILL_APP);
 
             // Cancel alarms
-            Intent intent = new Intent(context,APODService.class);
-            PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,0);
+            Intent intent = new Intent(context, APODService.class);
+            PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
@@ -210,9 +127,8 @@ public class APODService extends IntentService {
 
     }
 
-
     // Set Alarm Manager to schedule this service
-    protected static void setAlarmManager(Context context){
+    static void setAlarmManager(Context context) {
         Log.v(TAG, "In the setAlarmManager().");
 
         // Set the alarm to start at approximately 8:00 a.m.
@@ -220,8 +136,8 @@ public class APODService extends IntentService {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 8);
 
-        Intent intent = new Intent(context,APODService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,0);
+        Intent intent = new Intent(context, APODService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -236,7 +152,87 @@ public class APODService extends IntentService {
 
     }
 
-    private void sendNotification(Context context){
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        Log.v(TAG, "In the onHandleIntent().");
+
+        // New API 26 requirement:
+        // The app must call service's startForeground()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(100, new Notification());
+        }
+
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+        Uri imagesUri = APODContract.PictureEntry.buildLastItemUri();
+
+        Cursor cursor = contentResolver.query(
+                imagesUri,
+                DetailsFragment.IMAGE_ITEM_COLUMNS,
+                null,
+                null,
+                null);
+
+        // Get preferences:
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean sendNotifications = preferences.getBoolean(getResources().getString(R.string.pref_notifications_key), false);
+        Boolean setWallpaper = preferences.getBoolean(getResources().getString(R.string.pref_set_wallpaper_key), false);
+
+        if (cursor == null) {
+            Log.w(TAG, "Cursor is null. Wallpaper will not be set.");
+
+            mNotificationText = getString(R.string.notification_no_connection);
+            setWallpaper = false;
+
+        } else if (cursor != null && !cursor.moveToFirst()) {
+            Log.e(TAG, "Error reading item detail cursor.  Wallpaper will not be set.");
+
+            mNotificationText = getString(R.string.notification_server_error);
+            setWallpaper = false;
+
+            cursor.close();
+
+        } else {
+
+            //Get data from cursor
+            if ((cursor.getString(DetailsFragment.COL_MEDIA_TYPE)).equals(IMAGE_MEDIA)) {
+                mNewImage = true;
+                // Get data from cursor:
+                mNotificationText = cursor.getString(DetailsFragment.COL_TITLE);
+                mAPODDate = cursor.getString(DetailsFragment.COL_DATE);
+                mAPODHDUrl = cursor.getString(DetailsFragment.COL_HDURL);
+                mAPODUrl = cursor.getString(DetailsFragment.COL_URL);
+
+                try {
+
+                    mAPODImage = Picasso.with(getApplicationContext())
+                            .load(cursor.getString(DetailsFragment.COL_URL))
+                            .resize(50, 50).centerCrop().get();
+
+                } catch (IOException e) {
+                    Log.e(TAG, "Error loading image.", e);
+                }
+
+            } else {
+                mNotificationText = getString(R.string.notification_no_image);
+            }
+
+        }
+
+        if (sendNotifications) {
+            sendNotification(getApplicationContext());
+        }
+
+        if (mNewImage && setWallpaper) {
+            setWallpaper(getApplicationContext());
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        }
+
+    }
+
+    private void sendNotification(Context context) {
         Log.v(TAG, "In the sendNotification().");
 
         Intent intent;
@@ -245,7 +241,7 @@ public class APODService extends IntentService {
         Configuration configuration = context.getResources().getConfiguration();
         int deviceSmallestWidth = configuration.smallestScreenWidthDp;
 
-        if((deviceSmallestWidth<TABLET_WIDTH) && (mNewImage))  {
+        if ((deviceSmallestWidth < TABLET_WIDTH) && (mNewImage)) {
             intent = new Intent(context, DetailsActivity.class);
             intent.putExtra(DetailsFragment.ARG_ITEM_ID, mAPODDate);
 
@@ -253,7 +249,7 @@ public class APODService extends IntentService {
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
             stackBuilder.addNextIntentWithParentStack(intent);
 
-            pendingIntent =  stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             // For tablets and handhelds if there is no new image
             // set action to Main Activity
@@ -262,7 +258,7 @@ public class APODService extends IntentService {
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,getString(R.string.channel_id))
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, getString(R.string.channel_id))
                 .setContentTitle(getString(R.string.notification_title))
                 .setContentText(mNotificationText)
                 .setSmallIcon(R.drawable.ic_stat_apod)
@@ -271,7 +267,7 @@ public class APODService extends IntentService {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        if(mNewImage){
+        if (mNewImage) {
 
             builder.setLargeIcon(mAPODImage);
         } else {
@@ -289,13 +285,13 @@ public class APODService extends IntentService {
         Configuration configuration = getResources().getConfiguration();
         int deviceSmallestWidth = configuration.smallestScreenWidthDp;
 
-        float widthInpx = Utils.convertDpToPixel(deviceSmallestWidth,context);
+        float widthInpx = Utils.convertDpToPixel(deviceSmallestWidth, context);
         int imageHeight = (int) widthInpx;
 
         try {
 
-           Bitmap bitmap = Picasso.with(context)
-                    .load(mAPODHDUrl).resize(0,imageHeight).get();
+            Bitmap bitmap = Picasso.with(context)
+                    .load(mAPODHDUrl).resize(0, imageHeight).get();
 
             WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
             wallpaperManager.setBitmap(bitmap);
@@ -308,13 +304,13 @@ public class APODService extends IntentService {
             try {
 
                 Bitmap bitmap = Picasso.with(context)
-                        .load(mAPODUrl).resize(0,imageHeight).get();
+                        .load(mAPODUrl).resize(0, imageHeight).get();
 
                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
                 wallpaperManager.setBitmap(bitmap);
 
-            } catch (IOException e1){
-                Log.e(TAG,"Error getting image for wallpaper",e1);
+            } catch (IOException e1) {
+                Log.e(TAG, "Error getting image for wallpaper", e1);
             }
         }
     }

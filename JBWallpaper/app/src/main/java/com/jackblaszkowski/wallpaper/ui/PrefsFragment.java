@@ -33,7 +33,7 @@ public class PrefsFragment extends PreferenceFragmentCompat {
         super.onViewCreated(view, savedInstanceState);
 
         // Show the Up button in the action bar.
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(R.string.action_settings);
@@ -45,8 +45,8 @@ public class PrefsFragment extends PreferenceFragmentCompat {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //super.onCreateOptionsMenu(menu, inflater);
         // Hide options menu in this fragment
-        menu.setGroupVisible(R.id.menu_details_group,false);
-        menu.setGroupVisible(R.id.menu_group,false);
+        menu.setGroupVisible(R.id.menu_details_group, false);
+        menu.setGroupVisible(R.id.menu_group, false);
     }
 
 
@@ -54,7 +54,7 @@ public class PrefsFragment extends PreferenceFragmentCompat {
     public void onDetach() {
         super.onDetach();
         // Hide the Up button in the action bar.
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setTitle(R.string.app_name);
@@ -68,11 +68,11 @@ public class PrefsFragment extends PreferenceFragmentCompat {
         scheduleTasks();
     }
 
-    private void scheduleTasks(){
+    private void scheduleTasks() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        Boolean sendNotifications = preferences.getBoolean(getResources().getString(R.string.pref_notifications_key),false);
-        Boolean setWallpaper = preferences.getBoolean(getResources().getString(R.string.pref_set_wallpaper_key),false);
+        Boolean sendNotifications = preferences.getBoolean(getResources().getString(R.string.pref_notifications_key), false);
+        Boolean setWallpaper = preferences.getBoolean(getResources().getString(R.string.pref_set_wallpaper_key), false);
 
         // Schedule daily task:
         if (!sendNotifications & !setWallpaper) {

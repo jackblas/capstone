@@ -38,15 +38,19 @@ import java.util.TimeZone;
  * Created by jackb on 4/6/2018.
  */
 
-public class ThumbnailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ThumbnailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    // These indices are tied to IMAGE_COLUMNS.
+    public static final int COL_ID = 0;
+    public static final int COL_DATE = 1;
+    public static final int COL_TYPE = 2;
+    public static final int COL_TITLE = 3;
+    public static final int COL_URL = 4;
     private static final String LOG_TAG = "ThumbnailsFragment";
-
     // Class variables
     private static final int IMAGE_LOADER = 0;
     private static final int IMAGES_LOADED = 40;
-    private static  final int SPAN_COUNT = 2;
-
-    public static final String[] IMAGE_DIR_COLUMNS = {
+    private static final int SPAN_COUNT = 2;
+    private static final String[] IMAGE_DIR_COLUMNS = {
             APODContract.PictureEntry._ID,
             APODContract.PictureEntry.COLUMN_DATE,
             APODContract.PictureEntry.COLUMN_MEDIA_TYPE,
@@ -54,24 +58,16 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
             APODContract.PictureEntry.COLUMN_URL
 
     };
-
-    // These indices are tied to IMAGE_COLUMNS.
-    public static final int COL_ID = 0;
-    public static final int COL_DATE = 1;
-    public static final int COL_TYPE = 2;
-    public static final int COL_TITLE = 3;
-    public static final int COL_URL = 4;
-
     // Instance variables
     //private Cursor mCursor;
     private RVAdapter rvAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    View rootView;
-    AdView mAdView;
+    private View rootView;
+    private AdView mAdView;
 
     private String startDate;
-    private int mPosition=-1;
+    private int mPosition = -1;
 
     private OnFragmentInteractionListener mCallback;
     // Store a member variable for the listener
@@ -86,12 +82,12 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
         SimpleDateFormat dateFormat = new SimpleDateFormat(APODContract.APOD_DATE_PATTERN);
         Calendar now = Calendar.getInstance();
         now.setTimeZone(TimeZone.getDefault());
-        now.add(Calendar.DATE,-IMAGES_LOADED);
+        now.add(Calendar.DATE, -IMAGES_LOADED);
 
         startDate = dateFormat.format(now.getTime());
 
         // Initialize adMob
-        MobileAds.initialize(getActivity(),getString(R.string.banner_ad_unit_id));
+        MobileAds.initialize(getActivity(), getString(R.string.banner_ad_unit_id));
         MobileAds.initialize(getActivity());
 
     }
@@ -100,10 +96,10 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        StaggeredGridLayoutManager sglm=null;
+        StaggeredGridLayoutManager sglm = null;
 
         //Inflate layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_list,container,false);
+        rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
         // Set adapter, layout manager and scroll Listener for the recycler view:
         mRecyclerView = rootView.findViewById(R.id.my_recycler_view);
@@ -114,7 +110,7 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
         Configuration configuration = getResources().getConfiguration();
         int deviceSmallestWidth = configuration.smallestScreenWidthDp;
 
-        if((deviceSmallestWidth<600)) {
+        if ((deviceSmallestWidth < 600)) {
             sglm = new StaggeredGridLayoutManager(SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(sglm);
         } else {
@@ -130,8 +126,8 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
 
-                Log.e(LOG_TAG,"onLoadMore()- page = " + page);
-                Log.e(LOG_TAG,"onLoadMore()- totalItemsCount = " + totalItemsCount);
+                Log.e(LOG_TAG, "onLoadMore()- page = " + page);
+                Log.e(LOG_TAG, "onLoadMore()- totalItemsCount = " + totalItemsCount);
 
                 loadNextDataFromApi(page);
             }
@@ -157,7 +153,7 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onResume() {
         super.onResume();
-        if(mAdView!=null){
+        if (mAdView != null) {
             mAdView.resume();
         }
     }
@@ -165,8 +161,9 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onPause() {
         // Pause the AdView.
-        mAdView.pause();
-
+        if (mAdView != null) {
+            mAdView.pause();
+        }
         super.onPause();
     }
 
@@ -177,7 +174,6 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
 
         super.onDestroy();
     }
-
 
 
     @Override
@@ -193,10 +189,9 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
     }
 
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder=null;
+        String sortOrder = null;
         Uri imagesUri = APODContract.PictureEntry.buildDirUri(startDate);
 
         return new CursorLoader(getActivity(),
@@ -209,37 +204,37 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.d(LOG_TAG,"In the onLoadFinished().");
+        Log.d(LOG_TAG, "In the onLoadFinished().");
 
         View intro = rootView.findViewById(R.id.intro);
-        if(intro != null) {
+        if (intro != null) {
             intro.setVisibility(View.GONE);
         }
 
-        if(cursor != null) {
+        if (cursor != null) {
 
             if (cursor.getCount() < 1) {
                 mCallback.showServerErrorAlert();
             }
 
-           // Here:
+            // Here:
             //RVAdapter adapter = new RVAdapter(null);
             rvAdapter.setCursor(cursor);
-            mRecyclerView.swapAdapter(rvAdapter,false);
+            mRecyclerView.swapAdapter(rvAdapter, false);
 
 
         } else {
-            Log.d(LOG_TAG,"In the onLoadFinished(): cursor is null");
+            Log.d(LOG_TAG, "In the onLoadFinished(): cursor is null");
         }
 
         showAdd();
 
     }
 
-    private void showAdd(){
+    private void showAdd() {
         Log.d(LOG_TAG, "AdMob: in showAdd().");
         mAdView = getActivity().findViewById(R.id.adView);
-        if(mAdView == null) {
+        if (mAdView == null) {
             Log.d(LOG_TAG, "AdView is null.");
         }
 
@@ -260,8 +255,8 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
 
 
     private void loadNextDataFromApi(int offset) {
-        Log.d(LOG_TAG,"In the loadNextDataFromApi()");
-        Log.d(LOG_TAG,"Query startDate = " + startDate);
+        Log.d(LOG_TAG, "In the loadNextDataFromApi()");
+        Log.d(LOG_TAG, "Query startDate = " + startDate);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(APODContract.APOD_DATE_PATTERN);
         Calendar calendar = Calendar.getInstance();
@@ -269,7 +264,7 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
         try {
             // Recalculate startDate to get more images
             calendar.setTime(dateFormat.parse(startDate));
-            calendar.add(Calendar.DATE,-IMAGES_LOADED);
+            calendar.add(Calendar.DATE, -IMAGES_LOADED);
 
             startDate = dateFormat.format(calendar.getTime());
 
@@ -288,12 +283,26 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
      */
     public interface OnFragmentInteractionListener {
 
-        void onFragmentInteraction(String id,int position);
+        void onFragmentInteraction(String id, int position);
+
         void showServerErrorAlert();
 
     }
 
     // RECYCLER VIEW ADAPTER CLASS
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView titleTextView;
+        final ImageView imageView;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+
+            titleTextView = itemView.findViewById(R.id.list_item_title);
+            imageView = itemView.findViewById(R.id.list_item_image);
+
+        }
+    }
 
     private class RVAdapter extends RecyclerView.Adapter<ViewHolder> {
 
@@ -303,7 +312,7 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
         private Context context;
 
 
-        public RVAdapter(Cursor cursor) {
+        RVAdapter(Cursor cursor) {
             mCursor = cursor;
         }
 
@@ -311,8 +320,8 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
         public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
 
             // create a new view
-            context=parent.getContext();
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item,parent,false);
+            context = parent.getContext();
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
             // create a View Holder
             final ViewHolder vh = new ViewHolder(view);
 
@@ -332,9 +341,9 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
                         mCursor.moveToPosition(vh.getAdapterPosition());
                         String date = mCursor.getString(COL_DATE);
 
-                        mCallback.onFragmentInteraction(date,vh.getAdapterPosition());
+                        mCallback.onFragmentInteraction(date, vh.getAdapterPosition());
 
-                        mPosition=vh.getAdapterPosition();
+                        mPosition = vh.getAdapterPosition();
                     }
 
                 }
@@ -351,12 +360,12 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
 
             holder.titleTextView.setText(mCursor.getString(COL_TITLE));
 
-            Picasso.with(context).load(mCursor.getString(COL_URL)).resize(150,0).into(holder.imageView);
+            Picasso.with(context).load(mCursor.getString(COL_URL)).resize(150, 0).into(holder.imageView);
         }
 
         @Override
         public int getItemCount() {
-            if(mCursor==null)
+            if (mCursor == null)
                 return 0;
             return mCursor.getCount();
         }
@@ -367,22 +376,8 @@ public class ThumbnailsFragment extends Fragment implements LoaderManager.Loader
             return mCursor.getLong(mCursor.getColumnIndex(APODContract.PictureEntry._ID));
         }
 
-        void setCursor(Cursor cursor){
-            mCursor=cursor;
-        }
-    }
-
-
-    public static class ViewHolder extends  RecyclerView.ViewHolder {
-        public final TextView titleTextView;
-        public final ImageView imageView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            titleTextView =  itemView.findViewById(R.id.list_item_title);
-            imageView = itemView.findViewById(R.id.list_item_image);
-
+        void setCursor(Cursor cursor) {
+            mCursor = cursor;
         }
     }
 

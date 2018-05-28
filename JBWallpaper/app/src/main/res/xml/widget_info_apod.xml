@@ -5,5 +5,4 @@
     android:minWidth="@dimen/widget_apod_width"
     android:previewImage="@drawable/app_widget_preview"
     android:updatePeriodMillis="21600000"
-    android:widgetCategory="home_screen">
-</appwidget-provider>
+    android:widgetCategory="home_screen"></appwidget-provider>

@@ -1,14 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    android:showDividers="middle"
-    >
+    android:showDividers="middle">
 
     <!--
     This layout is a two-pane layout for the
@@ -20,14 +17,12 @@
         android:name="com.jackblaszkowski.wallpaper.ui.ThumbnailsFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
 
     <FrameLayout
         android:id="@+id/details_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        />
+        android:layout_weight="3" />
 
 </LinearLayout>

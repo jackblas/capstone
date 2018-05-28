@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">APOD</string>
-    <string name="details_activity_name">Picture Details</string>
 
     <!-- Actions -->
     <string name="action_settings">Settings</string>
     <string name="action_share">Share</string>
     <string name="action_set">Set As Wallpaper</string>
-    
+
     <!-- Preferences -->
     <string name="pref_notifications_key">pref_notification</string>
     <string name="pref_set_wallpaper_key">pref_set_wallpaper</string>
@@ -19,7 +18,6 @@
 
     <!-- Labels -->
     <string name="credits_string">Credits:</string>
-    <string name="copyright_string">Copyright:</string>
 
     <!-- App Widget -->
     <string name="app_widget_name">APOD Widget</string>
@@ -29,8 +27,6 @@
 
     <!-- Dialogs -->
     <string name="no_connection_alert_title">No Network Connection!</string>
-    <string name="no_connection_alert_message_one">Data not loaded due to network connection issues.</string>
-    <string name="no_connection_alert_message_two">Image not loaded due to network connection issues.</string>
     <string name="no_connection_alert_message_three">Network error, please try again later.</string>
 
     <!-- Toasts and Snackbars -->
@@ -49,9 +45,13 @@
     <string name="notification_title">APOD</string>
     <string name="notification_no_image">No new image today.</string>
     <string name="notification_no_connection">No new image today. Network unavailable</string>
-    <string name="notificaton_server_error">No new image today. Server error.</string>
+    <string name="notification_server_error">No new image today. Server error.</string>
+
+    <!-- Content descriptors -->
+    <string name="cd_full_screen">Full screen</string>
+    <string name="cd_refresh">Refresh</string>
+
 
     <!-- AdMob -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="your_physical_device_id">99999999999999999999999999999999</string>
 </resources>

@@ -32,8 +32,6 @@ public class APODWidgetService extends IntentService {
     private static final String TAG = "APODWidgetService";
     private static final int TABLET_WIDTH = 600;
 
-    private boolean isNewImage;
-
     public APODWidgetService() {
         super("APODWidgetService");
     }
@@ -41,14 +39,14 @@ public class APODWidgetService extends IntentService {
     @Override
 
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.v(TAG," In the onHandleIntent()");
+        Log.v(TAG, " In the onHandleIntent()");
 
         String imageTitle = "";
         String imageDate = "";
         String imageUrl = "";
-        String formattedDate="";
+        String formattedDate = "";
 
-        isNewImage=true;
+        boolean isNewImage = true;
 
         // Retrieve all of the widget ids:
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
@@ -75,16 +73,16 @@ public class APODWidgetService extends IntentService {
                 null);
 
         if (cursor == null) {
-            Log.d(TAG,"Cursor in null.");
+            Log.d(TAG, "Cursor in null.");
         }
-        if (cursor !=null && (!cursor.moveToFirst())) {
-            Log.d(TAG,"Cursor is empty.");
+        if (cursor != null && (!cursor.moveToFirst())) {
+            Log.d(TAG, "Cursor is empty.");
         }
 
-        if(cursor!=null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
 
             // Check APOD media type:
-            if((cursor.getString(DetailsFragment.COL_MEDIA_TYPE)).equals("image")) {
+            if ((cursor.getString(DetailsFragment.COL_MEDIA_TYPE)).equals("image")) {
 
                 // Get data from cursor:
                 imageTitle = cursor.getString(DetailsFragment.COL_TITLE);
@@ -96,16 +94,16 @@ public class APODWidgetService extends IntentService {
                     formattedDate = Utils.formatDate(imageDate);
 
                 } catch (ParseException e) {
-                    formattedDate="";
-                    Log.e(TAG, "Error parsing date.",e);
+                    formattedDate = "";
+                    Log.e(TAG, "Error parsing date.", e);
                 }
 
-                Log.d(TAG,"Image Url:" + imageUrl);
+                Log.d(TAG, "Image Url:" + imageUrl);
 
             } else {
                 Log.v(TAG, "No image today.");
-                imageTitle=getString(R.string.app_widget_no_image);
-                isNewImage=false;
+                imageTitle = getString(R.string.app_widget_no_image);
+                isNewImage = false;
 
             }
 
@@ -120,7 +118,7 @@ public class APODWidgetService extends IntentService {
                 //    continue;
                 //}
 
-                if(isNewImage) {
+                if (isNewImage) {
 
                     PendingIntent pendingIntent;
 
@@ -177,7 +175,7 @@ public class APODWidgetService extends IntentService {
             }
 
         } else { // cursor is null or empty
-            Log.w(TAG,"Widget not updated. Connection problems.");
+            Log.w(TAG, "Widget not updated. Connection problems.");
 
             for (int appWidgetId : appWidgetIds) {
 
@@ -200,7 +198,6 @@ public class APODWidgetService extends IntentService {
 
         if (cursor != null) {
             cursor.close();
-            return;
         }
 
     }

@@ -18,7 +18,7 @@ public class APODJobService extends JobService {
     public boolean onStartJob(JobParameters params) {
         Log.v(LOG_TAG, "In onStartJob() called");
 
-        intent = new Intent(getApplicationContext(),APODService.class);
+        intent = new Intent(getApplicationContext(), APODService.class);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             getApplicationContext().startService(intent);
@@ -35,7 +35,7 @@ public class APODJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        if (intent != null){
+        if (intent != null) {
             getApplicationContext().stopService(intent);
         }
         return false;

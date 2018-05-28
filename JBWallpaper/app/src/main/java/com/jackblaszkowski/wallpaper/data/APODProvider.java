@@ -13,18 +13,17 @@ import com.jackblaszkowski.wallpaper.remote.APODApi;
 import com.jackblaszkowski.wallpaper.utils.Utils;
 
 
-
 public class APODProvider extends ContentProvider {
 
     private static final String TAG = "APODProvider";
 
     // URI Matcher used by this content provider.
-    static final int IMAGE = 100;
-    static final int IMAGE_WITH_ID = 101;
-    static final int FROM_DATE = 201;
-    static final int DATE_RANGE = 202;
+    private static final int IMAGE = 100;
+    private static final int IMAGE_WITH_ID = 101;
+    private static final int FROM_DATE = 201;
+    private static final int DATE_RANGE = 202;
 
-    static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -53,19 +52,18 @@ public class APODProvider extends ContentProvider {
         Cursor retCursor;
 
         if (!(Utils.isOnline(getContext()))) {
-            Log.w(TAG,"Device Not Online!");
-            retCursor=null;
+            Log.w(TAG, "Device Not Online!");
+            retCursor = null;
             return retCursor;
         }
 
         switch (sUriMatcher.match(uri)) {
             // "apod/*"
-            case IMAGE_WITH_ID:
-            {
+            case IMAGE_WITH_ID: {
                 // Get image by id/date
                 String imageDate = APODContract.PictureEntry.getItemId(uri);
 
-                selectionArgs=new String[]{imageDate};
+                selectionArgs = new String[]{imageDate};
                 //selection=sImageDateSelection;
 
                 // public static Cursor query(String path, String[] projection, String selection, String[] selectionArgs,String sortOrder);
@@ -90,12 +88,11 @@ public class APODProvider extends ContentProvider {
 
             }
             // "apod/start_date/*
-            case FROM_DATE:
-            {
+            case FROM_DATE: {
                 // Get images in date range (provide start date only; assumed end day is today)
                 String startDate = APODContract.PictureEntry.getItemId(uri);
 
-                selectionArgs=new String[]{startDate};
+                selectionArgs = new String[]{startDate};
 
                 retCursor = new APODApi().query(APODContract.PATH_IMAGE,
                         projection,
@@ -107,13 +104,12 @@ public class APODProvider extends ContentProvider {
             }
 
             // "apod/*/*
-            case DATE_RANGE:
-            {
+            case DATE_RANGE: {
                 // Get images in date range
                 String startDate = APODContract.PictureEntry.getStartDate(uri);
                 String endDate = APODContract.PictureEntry.getStartEnd(uri);
 
-                selectionArgs=new String[]{startDate,endDate};
+                selectionArgs = new String[]{startDate, endDate};
 
                 retCursor = new APODApi().query(APODContract.PATH_IMAGE,
                         projection,

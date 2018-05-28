@@ -29,7 +29,6 @@ public class FullScreenFragment extends Fragment {
     public static final String ARG_TITLE = "item_title";
     public static final String ARG_DATE = "state_date";
 
-    private View mRootView;
     private String mUrl;
     private String mTitle;
     private String mDate;
@@ -54,16 +53,16 @@ public class FullScreenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Inflate layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_full,container,false);
+        View mRootView = inflater.inflate(R.layout.fragment_full, container, false);
 
-        ImageView imageView = (ImageView) mRootView.findViewById(R.id.full_image);
+        ImageView imageView = mRootView.findViewById(R.id.full_image);
 
         Picasso.with(getContext()).load(mUrl).into(imageView);
 
-        TextView titleView = (TextView) mRootView.findViewById(R.id.full_title);
+        TextView titleView = mRootView.findViewById(R.id.full_title);
         titleView.setText(mTitle);
 
-        return  mRootView;
+        return mRootView;
     }
 
 
@@ -84,12 +83,13 @@ public class FullScreenFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //super.onCreateOptionsMenu(menu, inflater);
         // Hide options menu in this fragment
-        menu.setGroupVisible(R.id.menu_details_group,false);
-        menu.setGroupVisible(R.id.menu_group,false);
+        menu.setGroupVisible(R.id.menu_details_group, false);
+        menu.setGroupVisible(R.id.menu_group, false);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 // Back to Details
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -100,29 +100,29 @@ public class FullScreenFragment extends Fragment {
         }
     }
 
-    private void  setView(){
+    private void setView() {
 
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) (getActivity()).findViewById(R.id.details_layout);
+        CoordinatorLayout coordinatorLayout = (getActivity()).findViewById(R.id.details_layout);
 
         if (coordinatorLayout != null) {
             // Handheld layout
 
-            AppBarLayout appBarLayout = (AppBarLayout)getActivity().findViewById(R.id.details_app_bar);
-            if(appBarLayout != null) {
+            AppBarLayout appBarLayout = getActivity().findViewById(R.id.details_app_bar);
+            if (appBarLayout != null) {
                 appBarLayout.setExpanded(false);
             }
 
-            CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout toolbarLayout = getActivity().findViewById(R.id.toolbar_layout);
             toolbarLayout.setTitle(mDate);
 
-            FloatingActionButton fab = (FloatingActionButton) coordinatorLayout.findViewById(R.id.fab);
+            FloatingActionButton fab = coordinatorLayout.findViewById(R.id.fab);
             fab.setVisibility(View.INVISIBLE);
 
         } else {
             // Tablet
-            ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
-            if(actionBar != null){
+            if (actionBar != null) {
                 actionBar.setDisplayHomeAsUpEnabled(true);
                 actionBar.setTitle(getString(R.string.app_name) + " - " + mDate);
             }
@@ -131,25 +131,25 @@ public class FullScreenFragment extends Fragment {
     }
 
 
-    private void reSetView(){
+    private void reSetView() {
 
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) (getActivity()).findViewById(R.id.details_layout);
+        CoordinatorLayout coordinatorLayout = (getActivity()).findViewById(R.id.details_layout);
 
         if (coordinatorLayout != null) {
             // Handheld
-            AppBarLayout appBarLayout = (AppBarLayout)getActivity().findViewById(R.id.details_app_bar);
+            AppBarLayout appBarLayout = getActivity().findViewById(R.id.details_app_bar);
 
-            if(appBarLayout != null) {
+            if (appBarLayout != null) {
                 // Handheld layout
                 appBarLayout.setExpanded(true);
             }
 
-            FloatingActionButton fab = (FloatingActionButton) coordinatorLayout.findViewById(R.id.fab);
+            FloatingActionButton fab = coordinatorLayout.findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
 
         } else {
             // Tablet
-            ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setDisplayHomeAsUpEnabled(false);
                 actionBar.setTitle(R.string.app_name);

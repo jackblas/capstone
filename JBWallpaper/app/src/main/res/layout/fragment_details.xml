@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -13,39 +12,39 @@
 
         <TextView
             android:id="@+id/details_title"
+            style="@style/DetailsTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsTitle"/>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/details_byline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
+            android:layout_marginStart="@dimen/text_margin"
             android:orientation="horizontal"
-            android:id="@+id/details_byline"
-            android:layout_marginLeft="@dimen/text_margin">
+            android:visibility="invisible">
 
             <TextView
+                style="@style/DetailBylineLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/credits_string"
-                android:layout_marginRight="4dp"
-                style="@style/DetailBylineLabel"/>
+                android:layout_marginEnd="4dp"
+                android:text="@string/credits_string" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/details_credits"
                 style="@style/DetailByline"
-                android:id="@+id/details_credits"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
 
         <TextView
             android:id="@+id/details_explanation"
+            style="@style/DetailsBody"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/DetailsBody"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

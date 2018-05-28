@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
     // Instance variables
     private boolean mTwoPane;
     // This boolean is used in Master/Details layout to prevent duplicate Alerts
-    private boolean mServerErrorShown=false;
+    private boolean mServerErrorShown = false;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
             // large-screen layouts
             mTwoPane = true;
             // Load default item (first) into the details panel
-            if(savedInstanceState == null) {
+            if (savedInstanceState == null) {
                 DetailsFragment fragment = new DetailsFragment();
                 //fragment.setArguments(arguments);
 
@@ -97,14 +97,14 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frameLayout, new PrefsFragment())
                         .addToBackStack(null)
                         .commit();
 
-                return  true;
+                return true;
 
             case android.R.id.home:
 
@@ -123,12 +123,12 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        if(mServerErrorShown) {
+        if (mServerErrorShown) {
             MenuItem share = menu.findItem(R.id.action_share);
             MenuItem setWall = menu.findItem(R.id.action_set);
 
-            if(share != null) share.setEnabled(false);
-            if(setWall != null) setWall.setEnabled(false);
+            if (share != null) share.setEnabled(false);
+            if (setWall != null) setWall.setEnabled(false);
         }
 
         return true;
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
     public void onFragmentInteraction(String itemId, int position) {
 
         if (mTwoPane) {
-            mServerErrorShown=false; // reset the flag in case it has been shown
+            mServerErrorShown = false; // reset the flag in case it has been shown
             Bundle arguments = new Bundle();
             arguments.putString(DetailsFragment.ARG_ITEM_ID, itemId);
             DetailsFragment fragment = new DetailsFragment();
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
     @Override
     public void showServerErrorAlert() {
 
-        if(!mServerErrorShown) {
+        if (!mServerErrorShown) {
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this, 0);
             //AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder.setTitle(R.string.server_error_alert_title);
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
             alertBuilder.setPositiveButton(android.R.string.ok, null);
             alertBuilder.create().show();
 
-            mServerErrorShown=true;
+            mServerErrorShown = true;
         }
     }
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements ThumbnailsFragmen
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = 	getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }

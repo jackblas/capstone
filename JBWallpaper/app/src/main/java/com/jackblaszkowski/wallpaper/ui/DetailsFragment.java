@@ -43,14 +43,8 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 
-public class DetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    private static final String LOG_TAG = "DetailsFragment";
-
-    // Class variables
-    private static final int IMAGE_LOADER = 1;
+public class DetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String ARG_ITEM_ID = "item_id";
-    private static final String WEBSITE_BASE_URL = "https://apod.nasa.gov/apod/";
-
     public static final String[] IMAGE_ITEM_COLUMNS = {
             APODContract.PictureEntry._ID,
             APODContract.PictureEntry.COLUMN_COPYRIGHT,
@@ -71,7 +65,10 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     public static final int COL_MEDIA_TYPE = 5;
     public static final int COL_TITLE = 6;
     public static final int COL_URL = 7;
-
+    private static final String LOG_TAG = "DetailsFragment";
+    // Class variables
+    private static final int IMAGE_LOADER = 1;
+    private static final String WEBSITE_BASE_URL = "https://apod.nasa.gov/apod/";
     // Instance variables
     private ThumbnailsFragment.OnFragmentInteractionListener mCallback;
 
@@ -80,7 +77,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     private Cursor mCursor;
     private String mItemId;
 
-    String mImagePageUrl ="";
+    private String mImagePageUrl = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +87,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
         if (getArguments() != null && getArguments().containsKey(ARG_ITEM_ID)) {
 
             mItemId = getArguments().getString(ARG_ITEM_ID);
-            Log.d(LOG_TAG,"In onCreate()-mItemId: " + mItemId);
+            Log.d(LOG_TAG, "In onCreate()-mItemId: " + mItemId);
 
             mImagePageUrl = getImagePageUrl(mItemId);
         }
@@ -99,10 +96,10 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(LOG_TAG,"In onCreateView().");
+        Log.d(LOG_TAG, "In onCreateView().");
 
         //Inflate layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_details,container,false);
+        mRootView = inflater.inflate(R.layout.fragment_details, container, false);
 
         //bindViews();
         return mRootView;
@@ -132,7 +129,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_details,menu);
+        inflater.inflate(R.menu.menu_details, menu);
 
         // Set Share action:
         ShareActionProvider mShareActionProvider;
@@ -149,11 +146,11 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.action_set:
                 setWallpaper();
-                return  true;
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -163,15 +160,15 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder=null;
+        String sortOrder = null;
         Uri imagesUri;
 
-        if(mItemId != null) {
+        if (mItemId != null) {
             imagesUri = APODContract.PictureEntry.buildItemUri(mItemId);
         } else {
             imagesUri = APODContract.PictureEntry.buildLastItemUri();
         }
-        Log.v(LOG_TAG,"In onCreateLoader():: imagesUri =" + imagesUri.toString());
+        Log.v(LOG_TAG, "In onCreateLoader():: imagesUri =" + imagesUri.toString());
 
         return new CursorLoader(getActivity(),
                 imagesUri,
@@ -211,46 +208,46 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
         bindViews();
     }
 
-    private void bindViews(){
-        Log.d(LOG_TAG,"In onLoadFinished()-bindViews().");
+    private void bindViews() {
+        Log.d(LOG_TAG, "In onLoadFinished()-bindViews().");
         if (mRootView == null) {
             return;
         }
         //Find views
-        TextView creditsView = (TextView) mRootView.findViewById(R.id.details_credits);
-        TextView titleView = (TextView) mRootView.findViewById(R.id.details_title);
-        TextView explanationView = (TextView) mRootView.findViewById(R.id.details_explanation);
+        TextView creditsView = mRootView.findViewById(R.id.details_credits);
+        TextView titleView = mRootView.findViewById(R.id.details_title);
+        TextView explanationView = mRootView.findViewById(R.id.details_explanation);
         View bylineView = mRootView.findViewById(R.id.details_byline);
 
         // Handheld:
         //ImageView toolbarImage = (ImageView) mRootView.findViewById(R.id.toolbar_image);
         Activity activity = this.getActivity();
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-        ImageView toolbarImage = (ImageView) activity.findViewById(R.id.toolbar_image);
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.details_layout);
+        CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
+        ImageView toolbarImage = activity.findViewById(R.id.toolbar_image);
+        CoordinatorLayout coordinatorLayout = activity.findViewById(R.id.details_layout);
 
         // Tablet:
-        FrameLayout frameLayout = (FrameLayout) activity.findViewById(R.id.details_image_frame);
-        TextView dateView = (TextView) mRootView.findViewById(R.id.details_date);
-        ImageView imageView = (ImageView) mRootView.findViewById(R.id.details_image);
+        FrameLayout frameLayout = activity.findViewById(R.id.details_image_frame);
+        TextView dateView = mRootView.findViewById(R.id.details_date);
+        ImageView imageView = mRootView.findViewById(R.id.details_image);
 
         //Bind views
-        if(mCursor != null){
+        if (mCursor != null) {
             // Format date
             try {
 
                 mImageDate = Utils.formatDate(mCursor.getString(COL_DATE));
 
             } catch (ParseException e) {
-                mImageDate="";
-                Log.e(LOG_TAG, "Error parsing date.",e);
+                mImageDate = "";
+                Log.e(LOG_TAG, "Error parsing date.", e);
             }
 
             // Title:
             titleView.setText(mCursor.getString(COL_TITLE));
 
             // Credits:
-            if (mCursor.getString(COL_COPYRIGHT)==null){
+            if (mCursor.getString(COL_COPYRIGHT) == null) {
                 bylineView.setVisibility(View.GONE);
             } else {
                 creditsView.setText(mCursor.getString(COL_COPYRIGHT));
@@ -260,10 +257,10 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
             explanationView.setText(mCursor.getString(COL_EXPLANATION));
 
             // Handheld layout
-            if(coordinatorLayout != null) {
+            if (coordinatorLayout != null) {
 
                 // Image
-                if(toolbarImage != null) {
+                if (toolbarImage != null) {
                     //Glide.with(getContext()).load(mCursor.getString(COL_URL)).thumbnail(0.1f).into(toolbarImage);
 
                     Picasso.with(getContext()).load(mCursor.getString(COL_URL)).into(toolbarImage);
@@ -277,7 +274,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
 
                 // FAB
-                FloatingActionButton fab = (FloatingActionButton) coordinatorLayout.findViewById(R.id.fab);
+                FloatingActionButton fab = coordinatorLayout.findViewById(R.id.fab);
 
                 if (fab != null) {
                     fab.setOnClickListener(new View.OnClickListener() {
@@ -294,14 +291,14 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
                             } else {
 
                                 Bundle arguments = new Bundle();
-                                arguments.putString(FullScreenFragment.ARG_URL,mCursor.getString(COL_HDURL));
-                                arguments.putString(FullScreenFragment.ARG_TITLE,mCursor.getString(COL_TITLE));
-                                arguments.putString(FullScreenFragment.ARG_DATE,mImageDate);
+                                arguments.putString(FullScreenFragment.ARG_URL, mCursor.getString(COL_HDURL));
+                                arguments.putString(FullScreenFragment.ARG_TITLE, mCursor.getString(COL_TITLE));
+                                arguments.putString(FullScreenFragment.ARG_DATE, mImageDate);
                                 FullScreenFragment fullScreenFragment = new FullScreenFragment();
                                 fullScreenFragment.setArguments(arguments);
 
                                 getActivity().getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.details_container,fullScreenFragment)
+                                        .replace(R.id.details_container, fullScreenFragment)
                                         .addToBackStack(null)
                                         .commit();
 
@@ -314,15 +311,15 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
 
             // Tablet layout
-            if(frameLayout != null) {
+            if (frameLayout != null) {
 
                 dateView.setText(mImageDate);
                 Picasso.with(getContext()).load(mCursor.getString(COL_URL))
-                        .resize(600,0)
+                        .resize(600, 0)
                         .into(imageView);
 
                 // FAB
-                FloatingActionButton fab = (FloatingActionButton) frameLayout.findViewById(R.id.fab);
+                FloatingActionButton fab = frameLayout.findViewById(R.id.fab);
 
                 if (fab != null) {
                     fab.setOnClickListener(new View.OnClickListener() {
@@ -355,7 +352,6 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
             }
 
 
-
         } else {  // mCursor = null
             mRootView.setVisibility(View.GONE);
         }
@@ -365,17 +361,17 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     // Convert date string "YYYY-MM-DD" into html
     // page name - "apYYMMDD.html" and add to base Url
     // Used by Share intent
-    private String getImagePageUrl(String date){
+    private String getImagePageUrl(String date) {
 
-        String imagePage = "ap" + date.substring(2,4)
-                + date.substring(5,7)
-                + date.substring(8,10)
-                +".html";
+        String imagePage = "ap" + date.substring(2, 4)
+                + date.substring(5, 7)
+                + date.substring(8, 10)
+                + ".html";
 
         return WEBSITE_BASE_URL + imagePage;
     }
 
-    private void setWallpaper(){
+    private void setWallpaper() {
 
         if (!(Utils.isOnline(getActivity()))) {
             // Show alert
@@ -387,44 +383,45 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
             return;
         }
 
-        new SetWallpaperTask(getContext(),mCursor.getString(DetailsFragment.COL_HDURL),mCursor.getString(DetailsFragment.COL_URL))
+        new SetWallpaperTask(getContext(), mCursor.getString(DetailsFragment.COL_HDURL), mCursor.getString(DetailsFragment.COL_URL))
                 .execute();
     }
 
     private static class SetWallpaperTask extends AsyncTask<Void, Void, Integer> {
+        private final String hdUrl;
+        private final String url;
         private WeakReference<Context> contextRef;
-        private String hdUrl;
-        private String url;
 
         // only retain a weak reference to the context
-        public SetWallpaperTask(Context context, String primaryUrl, String secondryUrl) {
+        SetWallpaperTask(Context context, String primaryUrl, String secondryUrl) {
             contextRef = new WeakReference<>(context);
-            hdUrl=primaryUrl;
-            url=secondryUrl;
+            hdUrl = primaryUrl;
+            url = secondryUrl;
         }
 
 
         protected void onPreExecute() {
             Toast.makeText(contextRef.get(), contextRef.get().getString(R.string.setting_wallpaper), Toast.LENGTH_LONG).show();
         }
+
         protected Integer doInBackground(Void... unused) {
-            Integer status =Integer.valueOf(0);
+            Integer status = 0;
 
             Configuration configuration = contextRef.get().getResources().getConfiguration();
             int deviceSmallestWidth = configuration.smallestScreenWidthDp;
 
-            float widthInpx = Utils.convertDpToPixel(deviceSmallestWidth,contextRef.get());
+            float widthInpx = Utils.convertDpToPixel(deviceSmallestWidth, contextRef.get());
             int imageHeight = (int) widthInpx;
 
             try {
 
                 Bitmap bitmap = Picasso.with(contextRef.get())
-                        .load(hdUrl).resize(0,imageHeight).get();
+                        .load(hdUrl).resize(0, imageHeight).get();
 
                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(contextRef.get());
                 wallpaperManager.setBitmap(bitmap);
 
-                status = new Integer(1);
+                status = Integer.valueOf(1);
 
             } catch (IOException e) {
                 Log.w(LOG_TAG, "IOException getting HD image");
@@ -432,21 +429,22 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
                 try {
 
                     Bitmap bitmap = Picasso.with(contextRef.get())
-                            .load(url).resize(0,imageHeight).get();
+                            .load(url).resize(0, imageHeight).get();
 
                     WallpaperManager wallpaperManager = WallpaperManager.getInstance(contextRef.get());
                     wallpaperManager.setBitmap(bitmap);
 
-                    status = new Integer(1);
+                    status = Integer.valueOf(1);
 
-                } catch (IOException e1){
-                    Log.e(LOG_TAG,"Error getting image for wallpaper",e1);
+                } catch (IOException e1) {
+                    Log.e(LOG_TAG, "Error getting image for wallpaper", e1);
                 }
             }
             return status;
         }
+
         protected void onPostExecute(Integer status) {
-            if(status.intValue() == 1) {
+            if (status == 1) {
                 Toast.makeText(contextRef.get(), contextRef.get().getString(R.string.wallpaper_set), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(contextRef.get(), contextRef.get().getString(R.string.wallpaper_error), Toast.LENGTH_SHORT).show();

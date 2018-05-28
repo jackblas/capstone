@@ -30,7 +30,6 @@ public class Utils {
     /**
      * This utility method checks to see whether a network connection is available
      * before the app attempts to connect to the network.
-     *
      */
     public static boolean isOnline(Context context) {
 
@@ -42,30 +41,29 @@ public class Utils {
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean isJobServiceOn( Context context ) {
-        JobScheduler scheduler = (JobScheduler) context.getSystemService( Context.JOB_SCHEDULER_SERVICE ) ;
+    public static boolean isJobServiceOn(Context context) {
+        JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
-        boolean hasBeenScheduled = false ;
+        boolean hasBeenScheduled = false;
 
-        for ( JobInfo jobInfo : scheduler.getAllPendingJobs() ) {
-            if ( jobInfo.getId() == APODService.JOB_ID) {
-                hasBeenScheduled = true ;
-                break ;
+        for (JobInfo jobInfo : scheduler.getAllPendingJobs()) {
+            if (jobInfo.getId() == APODService.JOB_ID) {
+                hasBeenScheduled = true;
+                break;
             }
         }
 
-        return hasBeenScheduled ;
+        return hasBeenScheduled;
     }
 
     /**
      * This utility method converts dp to physical px
-     *
      */
 
-    public static float convertDpToPixel(float dp, Context context){
+    public static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
     }
 
@@ -77,7 +75,7 @@ public class Utils {
             throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(APODContract.APOD_DATE_PATTERN);
 
-        Date date=new Date();
+        Date date = new Date();
         date = sdf.parse(dateIn);
 
         return DateFormat.getDateInstance(SimpleDateFormat.MEDIUM, Locale.getDefault()).format(date);

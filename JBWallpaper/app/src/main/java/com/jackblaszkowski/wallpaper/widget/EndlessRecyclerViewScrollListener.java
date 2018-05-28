@@ -12,6 +12,9 @@ import android.util.Log;
  */
 
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
+    final RecyclerView.LayoutManager mLayoutManager;
+    // Sets the starting page index
+    private final int startingPageIndex = 0;
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     private int visibleThreshold = 20;
@@ -21,10 +24,6 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     private int previousTotalItemCount = 0;
     // True if we are still waiting for the last set of data to load.
     private boolean loading = true;
-    // Sets the starting page index
-    private int startingPageIndex = 0;
-
-   RecyclerView.LayoutManager mLayoutManager;
 
 
     public EndlessRecyclerViewScrollListener(RecyclerView.LayoutManager layoutManager) {
@@ -50,8 +49,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
             if (i == 0) {
                 maxSize = lastVisibleItemPositions[i];
-            }
-            else if (lastVisibleItemPositions[i] > maxSize) {
+            } else if (lastVisibleItemPositions[i] > maxSize) {
                 maxSize = lastVisibleItemPositions[i];
             }
         }
@@ -98,9 +96,9 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
-            Log.e("LISTENER","currentPage=" + currentPage);
+            Log.e("LISTENER", "currentPage=" + currentPage);
             currentPage++;
-            Log.e("LISTENER","currentPage=" + currentPage);
+            Log.e("LISTENER", "currentPage=" + currentPage);
             onLoadMore(currentPage, totalItemCount, view);
             loading = true;
         }

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "180716863879",
+    "firebase_url": "https://apod-b594f.firebaseio.com",
+    "project_id": "apod-b594f",
+    "storage_bucket": "apod-b594f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180716863879:android:94c9ffff4d06555e",
+        "android_client_info": {
+          "package_name": "com.jackblaszkowski.wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180716863879-0lev9rsba8fblmjc79h7e1o73vejrbo2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jackblaszkowski.wallpaper",
+            "certificate_hash": "49f56439f5d189a6148099bac79c6066fe44a6c0"
+          }
+        },
+        {
+          "client_id": "180716863879-37cik88dpcftkiheoud1kdqo6fpv9jis.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgVngsNj3TNEwuZtSjg4od1mNJnUH4pGY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180716863879-37cik88dpcftkiheoud1kdqo6fpv9jis.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
